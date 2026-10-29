@@ -1,0 +1,40 @@
+# Codex 管理的系统 skills
+/.system/
+
+# macOS 与编辑器临时文件
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Python 环境与缓存
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 依赖、构建和临时运行产物
+node_modules/
+.cache/
+build/
+dist/
+coverage/
+logs/
+*.log
+tmp/
+temp/
+*.tmp
+
+# 环境配置与凭据：公开模板可跟踪
+.env
+.env.*
+!.env.example
+credentials.json
+secrets.json
+*.key
+*.pem
