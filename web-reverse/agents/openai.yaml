@@ -1,7 +1,7 @@
 interface:
   display_name: "网页逆向复现"
-  short_description: "复杂网页优先 REA 分析，人工验证后续接 Python HTTP"
-  default_prompt: "使用 $web-reverse 分析网址和目标内容；复杂签名、验证流程或请求差异须尝试可用且相关的 REA，人工验证时暂停并在我完成后继续；低频串行、遵守冷却，优先 Python 独立 HTTP，项目内 uv add 和普通 uv run，保存 JSON/Markdown。"
+  short_description: "自主浏览器抓包，深入组合 REA 分析并复现 Python HTTP"
+  default_prompt: "使用 $web-reverse 自主分析网址和目标内容，先监听再操作浏览器并核对响应，深入组合相关 REA 能力追踪复杂链路，尽量不提问或要求我操作；仅必要人工环节交接后续接，保持授权边界、低频串行与冷却，最终用独立 Python HTTP、项目内 uv add 和普通 uv run 验证并保存 JSON/Markdown。"
   icon_small: "assets/icon.svg"
   icon_large: "assets/icon.svg"
 policy:
