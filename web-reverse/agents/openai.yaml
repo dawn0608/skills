@@ -1,8 +1,8 @@
 interface:
   display_name: 网页逆向复现
-  short_description: 低频分析网页，用项目内 uv 与 Python 复现 HTTP，遇限流退避或停止
-  default_prompt: 使用 $web-reverse 分析我提供的网址和目标内容，采用串行低频请求与适当延迟，优先用 Python 还原算法，在对应项目中用
-    uv add 安装依赖并用普通 uv run 运行，HTML 保存为 JSON 或 Markdown；无法复现则简短说明原因并结束，不用浏览器兜底采集。
+  short_description: 深入分析复杂网页，低频验证并用项目内 uv 与 Python 复现 HTTP
+  default_prompt: 使用 $web-reverse 分析我提供的网址和目标内容，低频串行并适当延迟，遇复杂签名、混淆、解密或分页问题持续追踪有证据的路径，优先用
+    Python 还原并独立 HTTP 取数；项目内 uv add、普通 uv run，结果保存 JSON/Markdown；确认缺少登录等用户条件时直接说明，技术受阻须充分排查，不用浏览器兜底采集。
   icon_small: assets/icon.svg
   icon_large: assets/icon.svg
 policy:
