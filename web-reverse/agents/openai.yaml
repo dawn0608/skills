@@ -1,9 +1,9 @@
 interface:
-  display_name: "网页逆向复现"
-  short_description: "自主浏览器抓包，深入组合 REA 分析并复现 Python HTTP"
-  default_prompt: "使用 $web-reverse 自主分析网址和目标内容，先监听再操作浏览器并核对响应，深入组合相关 REA 能力追踪复杂链路，尽量不提问或要求我操作；仅必要人工环节交接后续接，保持授权边界、低频串行与冷却，最终用独立 Python HTTP、项目内 uv add 和普通 uv run 验证并保存 JSON/Markdown。"
-  icon_small: "assets/icon.svg"
-  icon_large: "assets/icon.svg"
+  display_name: web-reverse
+  short_description: REA 逆向与 Python HTTP 采集，自动 OCR 并按需接入视觉模型
+  default_prompt: 使用 $web-reverse 分析这个网址并交付 Python HTTP 爬虫；图形验证码先自动 OCR，确需视觉模型时推荐并引导配置。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
 policy:
   products:
   - chatgpt
