@@ -40,7 +40,7 @@ REA 是 Node/npm 工具；Python 包统一通过 `uv` 管理，两者不要混�
 | 已保存 HAR/SAZ | `inspect_web_network_capture` | 离线读取，不重放请求、不启动代理 |
 | REA 未开放的调试或必要会话信息 | 当前允许的 Playwright/Chrome 工具 | 不虚构接口、不绕过工具权限拒绝 |
 
-优先保存小范围、可复核的分析证据。用真实请求返回的数据确认页面字段与接口的对应关系，再迁移到 Python HTTP。
+在宿主允许的任务临时工作区保存小范围、可复核的分析证据，用真实请求返回的数据确认页面字段与接口的对应关系，再迁移到 Python HTTP。分析场景、捕获结果和导出源码默认留在最终交付目录之外；确需交付的材料按[主技能第 6 节的扩展条件](../SKILL.md#6-保存与最终说明)保留，并在 README 说明用途。
 
 ## 被动页面与脚本分析
 
@@ -70,7 +70,7 @@ rea analyze-web-bundle http://127.0.0.1:9222 TARGET_ID --json
 
 ## 主动交互与网络正文
 
-将以下对象保存为分析用 `analysis-scenario.json`。替换实际浏览器绝对路径和目标网址；REA 不自动安装浏览器。首次结构检查可短暂等待，正式翻页时还应等待本次结果更新的真实状态标记。
+在任务临时工作区将以下对象保存为分析用 `analysis-scenario.json`，后续相对路径命令均在该临时目录运行。替换实际浏览器绝对路径和目标网址；REA 不自动安装浏览器。首次结构检查可短暂等待，正式翻页时还应等待本次结果更新的真实状态标记。
 
 ```json
 {
@@ -127,7 +127,7 @@ rea capture-browser-scenario ./analysis-scenario.json --json > analysis-capture.
 
 ## 导出脚本与深入分析
 
-被动捕获须选择 `include_script_sources`；scenario 须选择 `capture.network.response_body`。保存完整 Evidence 或标准化结果，再导出到一个尚不存在的目录：
+被动捕获须选择 `include_script_sources`；scenario 须选择 `capture.network.response_body`。在任务临时工作区保存完整 Evidence 或标准化结果，再导出到该工作区内一个尚不存在的目录；以下绝对路径替换为实际临时路径：
 
 ```bash
 rea export-web-scripts /absolute/analysis-capture.json /absolute/exported-scripts --json
