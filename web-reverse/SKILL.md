@@ -93,7 +93,7 @@ description: >-
 
 以下是默认交付结构；辅助文件和目录仅按下述扩展条件增加：
 
-~~~text
+```text
 <site>-<task>/
 ├── crawl.py
 ├── crawl.py.lock           # 使用脚本锁文件时
@@ -101,7 +101,7 @@ description: >-
 └── samples/
     ├── page-0001.json      # JSON API 的完整原始正文
     └── page-0002.json
-~~~
+```
 
 样例按实际成功取得的页数和响应类型保存；单页网站不补造第二页，HTML 提取结果可相应为 JSON 或 Markdown。原始响应保持完整，解密或提取结果另存时明确区分；样例文件不得混入日志或自加 metadata 包装。
 
