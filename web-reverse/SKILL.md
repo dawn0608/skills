@@ -1,6 +1,9 @@
 ---
 name: web-reverse
-description: 基于 REA 对网页、JavaScript 与数据 API 做逆向分析，交付 uv 管理的参数化 Python HTTP 爬虫和原始完整样例数据。用于接口定位、AES/RSA 与签名复现、图形验证码自动 OCR、滑块分析、按需配置视觉模型，以及分页验证和后续 AI 定制。简单验证码先实测 ddddocr 或其他 Python 识别方法；需要视觉模型时推荐供应商与型号并引导配置 API Key，不直接转为手输验证码。只给链接时先分析页面再确认采集内容。浏览器仅用于分析，最终采集不依赖自动化。
+description: >-
+  基于 REA 对网页、JavaScript 与数据 API 做逆向分析，交付 uv 管理的参数化 Python HTTP
+  爬虫和原始完整样例数据。用于接口定位、AES/RSA 与签名复现、图形验证码自动 OCR、滑块分析、按需配置视觉模型，以及分页验证和后续 AI 定制。简单验证码先实测 ddddocr 或其他 Python
+  识别方法；需要视觉模型时推荐供应商与型号并引导配置 API Key，不直接转为手输验证码。只给链接时先分析页面再确认采集内容。浏览器仅用于分析，最终采集不依赖自动化。
 ---
 
 # web-reverse
