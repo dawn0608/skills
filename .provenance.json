@@ -1,4 +1,16 @@
 {
+  "domain-modeling/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/mattpocock/skills"
+  },
+  "grill-with-docs/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/mattpocock/skills"
+  },
+  "grilling/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/mattpocock/skills"
+  },
   "lov-media-crawler/SKILL.md": {
     "origin": "third-party",
     "repository": "https://github.com/lovstudio/media-crawler-skill"
@@ -6,6 +18,14 @@
   "reverse-engineer-anything/SKILL.md": {
     "origin": "third-party",
     "repository": "https://github.com/morluto/rea"
+  },
+  "setup-matt-pocock-skills/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/mattpocock/skills"
+  },
+  "to-spec/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/mattpocock/skills"
   },
   "web-reverse/SKILL.md": {
     "origin": "self"
