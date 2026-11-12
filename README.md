@@ -4,6 +4,7 @@
 
 | 技能 | 适用场景 |
 | --- | --- |
+| [agent-browser](agent-browser/SKILL.md) | 用浏览器执行网页交互、截图和测试。通过本机 `agent-browser` CLI 按需加载与版本匹配的指南。 |
 | [web-reverse](web-reverse/SKILL.md) | 复现网页数据请求，交付可独立运行的 Python HTTP 爬虫和原始响应样例。 |
 | [reverse-engineer-anything](reverse-engineer-anything/SKILL.md) | 用 REA 分析原生程序、固件、浏览器等目标的发布产物或运行时行为。 |
 | [lov-media-crawler](lov-media-crawler/SKILL.md) | 下载有权保存的社交媒体内容，并生成本地文件和诊断报告。 |
