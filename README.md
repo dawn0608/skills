@@ -14,6 +14,23 @@
 | [prototype](prototype/SKILL.md) | 搭建一次性界面或逻辑原型，验证设计想法。 |
 | [setup-matt-pocock-skills](setup-matt-pocock-skills/SKILL.md) | 为 Matt Pocock 的工程技能配置议题跟踪器、分诊标签和领域文档。 |
 | [to-spec](to-spec/SKILL.md) | 把已讨论的方案整理为规格，并发布到项目的议题跟踪器。 |
+| [planning-and-task-breakdown](planning-and-task-breakdown/SKILL.md) | 将明确需求拆成有依赖顺序、验收条件和验证步骤的开发任务。 |
+| [incremental-implementation](incremental-implementation/SKILL.md) | 按可验证的小步实现功能，每步完成测试、验证和提交。 |
+| [test-driven-development](test-driven-development/SKILL.md) | 按项目实际测试工具执行红、绿、重构循环，并用回归测试复现缺陷。 |
+| [code-review-and-quality](code-review-and-quality/SKILL.md) | 从正确性、可读性、架构、安全和性能五个维度审查改动。 |
+| [debugging-and-error-recovery](debugging-and-error-recovery/SKILL.md) | 通过复现、定位、缩小范围、修复根因和回归验证来排查错误。 |
+
+## 工程技能来源与配套文件
+
+上述 5 个工程技能来自 [Addy Osmani Agent Skills](https://github.com/addyosmani/agent-skills)，导入版本固定为提交 [`301b02b12bff98e4688e6984af6556802322bbde`](https://github.com/addyosmani/agent-skills/tree/301b02b12bff98e4688e6984af6556802322bbde)。各技能保留上游默认触发方式和正文，仅将 `../../references/` 引用改为 `../references/addyosmani-agent-skills/`，适配本仓库的平铺目录。
+
+配套文档与技能来自同一提交，集中保存在 [references/addyosmani-agent-skills](references/addyosmani-agent-skills/)：
+
+- [完成标准](references/addyosmani-agent-skills/definition-of-done.md)：供任务拆解和增量实现使用。
+- [测试模式](references/addyosmani-agent-skills/testing-patterns.md)：供测试驱动开发使用，示例以 JavaScript/TypeScript 为主。
+- [安全检查清单](references/addyosmani-agent-skills/security-checklist.md)和[性能检查清单](references/addyosmani-agent-skills/performance-checklist.md)：供代码审查使用。
+
+每个新增技能目录及共享文档目录均保留上游 MIT 许可证，来源登记在 [.provenance.json](.provenance.json)。文中提及的其他上游技能作为扩展阅读，不属于本次安装清单；实际使用遵循用户要求及全局、项目协作规范。
 
 ## 使用示例
 
