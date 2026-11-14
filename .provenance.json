@@ -3,77 +3,17 @@
     "origin": "third-party",
     "repository": "https://github.com/vercel-labs/agent-browser"
   },
-  "code-review-and-quality/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
-  "debugging-and-error-recovery/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
-  "domain-modeling/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/mattpocock/skills"
-  },
-  "grill-with-docs/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/mattpocock/skills"
-  },
-  "grilling/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/mattpocock/skills"
-  },
-  "incremental-implementation/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
   "lov-media-crawler/SKILL.md": {
     "origin": "third-party",
     "repository": "https://github.com/lovstudio/media-crawler-skill"
-  },
-  "planning-and-task-breakdown/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
   },
   "prototype/SKILL.md": {
     "origin": "third-party",
     "repository": "https://github.com/mattpocock/skills"
   },
-  "references/addyosmani-agent-skills/LICENSE": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
-  "references/addyosmani-agent-skills/definition-of-done.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
-  "references/addyosmani-agent-skills/performance-checklist.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
-  "references/addyosmani-agent-skills/security-checklist.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
-  "references/addyosmani-agent-skills/testing-patterns.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
   "reverse-engineer-anything/SKILL.md": {
     "origin": "third-party",
     "repository": "https://github.com/morluto/rea"
-  },
-  "setup-matt-pocock-skills/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/mattpocock/skills"
-  },
-  "test-driven-development/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/addyosmani/agent-skills"
-  },
-  "to-spec/SKILL.md": {
-    "origin": "third-party",
-    "repository": "https://github.com/mattpocock/skills"
   },
   "web-reverse/SKILL.md": {
     "origin": "self"
