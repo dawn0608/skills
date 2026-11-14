@@ -8,7 +8,6 @@
 | [web-reverse](web-reverse/SKILL.md) | 复现网页数据请求，交付可独立运行的 Python HTTP 爬虫和原始响应样例。 |
 | [reverse-engineer-anything](reverse-engineer-anything/SKILL.md) | 用 REA 分析原生程序、固件、浏览器等目标的发布产物或运行时行为。 |
 | [lov-media-crawler](lov-media-crawler/SKILL.md) | 下载有权保存的社交媒体内容，并生成本地文件和诊断报告。 |
-| [prototype](prototype/SKILL.md) | 搭建一次性界面或逻辑原型，验证设计想法。 |
 
 ## 使用示例
 
