@@ -8,6 +8,7 @@
 | [web-reverse](web-reverse/SKILL.md) | 复现网页数据请求，交付可独立运行的 Python HTTP 爬虫和原始响应样例。 |
 | [reverse-engineer-anything](reverse-engineer-anything/SKILL.md) | 用 REA 分析原生程序、固件、浏览器等目标的发布产物或运行时行为。 |
 | [lov-media-crawler](lov-media-crawler/SKILL.md) | 下载有权保存的社交媒体内容，并生成本地文件和诊断报告。 |
+| [video-shotcraft](video-shotcraft/SKILL.md) | 用真实页面截图、镜头卡和 Remotion 制作可编辑的产品宣传片，也可为已有视频选配和对齐音效。 |
 
 ## 使用示例
 
