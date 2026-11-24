@@ -11,6 +11,10 @@
     "origin": "third-party",
     "repository": "https://github.com/morluto/rea"
   },
+  "video-shotcraft/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/Vincentwei1021/video-shotcraft"
+  },
   "web-reverse/SKILL.md": {
     "origin": "self"
   }
