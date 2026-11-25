@@ -11,6 +11,9 @@
     "origin": "third-party",
     "repository": "https://github.com/morluto/rea"
   },
+  "ui-taste/SKILL.md": {
+    "origin": "third-party"
+  },
   "video-shotcraft/SKILL.md": {
     "origin": "third-party",
     "repository": "https://github.com/Vincentwei1021/video-shotcraft"
