@@ -1,10 +1,10 @@
 ---
-name: text-to-image
+name: imagegen
 description: 生成与编辑位图图像（照片、插画、海报、配图、贴图、商品图、UI 概念图等）。当用户要求画图、生成图片、配图、插图、海报、文生图，或说 generate image、make a picture、create an illustration 时使用；也用于编辑已有图片：去水印、提升清晰度、上色、换背景、风格迁移（edit image、remove watermark、upscale、colorize）。默认通过阿里云百炼 qwen-image-3.0-pro。不适用于：SVG 图标、流程图、图表、简单几何示意图——这些应直接用代码（SVG/HTML/CSS/Mermaid）绘制。
 allowed-tools: Bash(python3:*)
 ---
 
-# text-to-image
+# imagegen
 
 通过阿里云百炼（DashScope）生成与编辑位图图像。
 

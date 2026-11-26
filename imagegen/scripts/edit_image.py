@@ -92,7 +92,7 @@ def unique_path(base):
 
 def download(url, dest):
     dest.parent.mkdir(parents=True, exist_ok=True)
-    req = urllib.request.Request(url, headers={"User-Agent": "text-to-image-skill/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "imagegen-skill/1.0"})
     with urllib.request.urlopen(req, timeout=180) as resp:
         dest.write_bytes(resp.read())
 
