@@ -8,7 +8,7 @@ description: >-
 
 # web-reverse
 
-将网页中实际发生的数据请求，转化成可以脱离浏览器独立运行的 Python HTTP 脚本。以 REA 为主要逆向分析助手，按实际能力搭配 Playwright、当前宿主提供的 Chrome 工具及静态源码分析。先取得证据，再编写请求逻辑，不把猜测的 API 或浏览器成功冒充 HTTP 复现成功。
+将网页中实际发生的数据请求，转化成可以脱离浏览器独立运行的 Python HTTP 脚本。网页分析使用 REA CLI、已有浏览器及静态源码。先取得证据，再编写请求逻辑，不把猜测的 API 或浏览器成功冒充 HTTP 复现成功。
 
 ## 交付契约
 
@@ -22,15 +22,15 @@ description: >-
 
 ## 按需读取参考
 
-- 使用 REA 或选择浏览器分析路径前，读 [REA 操作与能力边界](references/rea-workflow.md)。核对实际版本、help 或 MCP schema，不编造命令。
+- 使用 REA 或选择浏览器分析路径前，读 [REA 操作与能力边界](references/rea-workflow.md)。用本机 CLI 的版本和子命令帮助核对可用参数。
 - 编写脚本、保存数据和验收前，读 [Python HTTP 与交付验收](references/python-http-delivery.md)。
 - 遇到签名、加密、验证码、滑块或反复拒绝时，读 [签名、密码与挑战处理](references/crypto-and-challenges.md)。不要一见验证页就结束。
 - 遇到任何图形验证码或视觉题时，必须读 [自动 OCR 与视觉模型接入](references/captcha-ocr-and-vision.md)；按需运行 [本地 OCR 候选工具](scripts/ocr_candidates.py)。不要把执行环境、识别能力、网站校验和模型配置问题混为一个阻断。
 
 ## 1. 检查环境并确定目标
 
-1. 检查当前工具、执行终端、uv、Python、已安装的 REA CLI/MCP 和可用浏览器分析工具；记录实际使用的工具。只在需要时检查对应 Node/浏览器版本。
-2. 已安装 REA 时直接使用；缺少时按参考选择受支持的临时 CLI 或现有分析工具。不要每次运行 setup，不擅自改写全局 MCP 配置，也不为网页分析安装无关的原生反编译引擎。
+1. 检查执行终端、uv、Python 和已安装的 REA CLI。需要动态页面时检查可用浏览器，记录实际使用的工具。
+2. 直接使用现有 `rea` 命令。缺少 CLI 时按参考选择临时 CLI 或已有的分析工具。网页分析无需注册 MCP 服务或安装独立 Playwright 工具。
 3. 所有新增 Python 依赖、环境和脚本运行统一使用 uv。优先单文件 PEP 723 元数据，依赖复杂时才用小型 uv 项目。选择与实际 OCR/密码依赖兼容的 Python；不要使用系统 pip/conda/pipenv 安装依赖。
 4. 用一次低频页面读取确认最终 URL、标题、栏目、列表/详情关系、翻页入口、筛选项、登录状态及是否有初始数据。静态 HTML 或公开 JSON 已满足目标时直接复现，不为使用工具而引入浏览器。
 5. 若目标未指定，完成结构分析后给出内容选项并等待答复。目标明确则继续；保留用户指定的时间、地区、栏目和筛选条件。

@@ -16,7 +16,7 @@
 
 本文件核对于 2026-10-30，依据 `morluto/rea` 的 `317bf3fe235e655b2d752d3be261cc0da7d00f2b`。该快照的 `package.json` 声明 `6.8.0`；这不证明用户已安装版本或 npm 当前发布版本与之相同。
 
-优先使用已有 REA MCP 或 CLI。先读取实际工具 schema，或检查版本和本次要用的子命令帮助；不要每次运行 setup/doctor，也不要猜测选项。
+使用已安装的 REA CLI。先检查版本和本次要用的子命令帮助。
 
 ```bash
 rea --version
@@ -26,19 +26,19 @@ rea capture-browser-scenario --help
 
 REA 是 Node/npm 工具；Python 包统一通过 `uv` 管理，两者不要混淆。上述快照的 Node 要求为 `^22.23.4 || ^24.22.1 || >=26.12.1`；采用实际选定版本的要求。
 
-官方提供 `npx rea-agents setup` 注册 agent，以及 `npm install --global rea-agents` 安装 CLI。它们不是每次分析的准备步骤；不要为了使用本 skill 自动修改全局 MCP 配置、升级 Node 或安装 Hopper/Ghidra 等无关原生引擎。
+官方 CLI 由 npm 包 `rea-agents` 提供。网页场景使用包内的 `playwright-core` 和已有浏览器，无需独立 Playwright 工具或 MCP 服务。
 
-没有 CLI、但任务允许获取 REA 包时，可在可信目录使用 `npx -y rea-agents@latest <子命令>`，记录实际版本并采用绝对目标路径。只有创建本 skill 不代表 REA、MCP 或浏览器已经可用。
+没有 CLI、但任务允许获取 REA 包时，可在可信目录使用 `npx -y rea-agents@latest <子命令>`，记录实际版本并采用绝对目标路径。
 
 ## 按能力选择工具
 
 | 需要的证据 | 优先工具 | 不能推断的能力 |
 | --- | --- | --- |
-| 页面结构、可访问性、JS 源码、请求发起位置 | `inspect_web_page` | 不提供完整网络正文或凭据值 |
-| Bundle 中路由、接口候选、可选 source map | `analyze_web_bundle` | 静态候选不证明接口可用 |
-| 点击、填写、翻页、捕获请求与响应正文 | `capture_browser_scenario` | 固定动作词汇，不是通用 JS hook |
-| 已保存 HAR/SAZ | `inspect_web_network_capture` | 离线读取，不重放请求、不启动代理 |
-| REA 未开放的调试或必要会话信息 | 当前允许的 Playwright/Chrome 工具 | 不虚构接口、不绕过工具权限拒绝 |
+| 页面结构、可访问性、JS 源码、请求发起位置 | `rea inspect-web-page` | 不提供完整网络正文或凭据值 |
+| Bundle 中路由、接口候选、可选 source map | `rea analyze-web-bundle` | 静态候选不证明接口可用 |
+| 点击、填写、翻页、捕获请求与响应正文 | `rea capture-browser-scenario` | 固定动作词汇，不是通用 JS hook |
+| 已保存 HAR/SAZ | `rea inspect-web-network-capture` | 离线读取，不重放请求、不启动代理 |
+| REA 未开放的调试或必要会话信息 | 当前已获授权的浏览器开发者工具 | 以该工具公开的能力和权限为限 |
 
 在宿主允许的任务临时工作区保存小范围、可复核的分析证据，用真实请求返回的数据确认页面字段与接口的对应关系，再迁移到 Python HTTP。分析场景、捕获结果和导出源码默认留在最终交付目录之外；确需交付的材料按[主技能第 6 节的扩展条件](../SKILL.md#6-保存与最终说明)保留，并在 README 说明用途。
 
@@ -47,12 +47,12 @@ REA 是 Node/npm 工具；Python 包统一通过 `uv` 管理，两者不要混�
 使用已经存在、可访问且属于任务范围的 Chrome 调试会话。CDP endpoint 必须是带显式端口的 loopback 地址。先列目标，再使用返回的真实 `target_id`，不要硬编码旧会话 ID。
 
 ```bash
-rea list-browser-targets http://127.0.0.1:9222 --json
+rea list-browser-targets http://127.0.0.1:9222 --format json
 rea inspect-web-page http://127.0.0.1:9222 TARGET_ID \
   --observation-ms 1500 \
   --include-accessibility-text --include-script-sources \
-  --include-json-body-shapes --json
-rea analyze-web-bundle http://127.0.0.1:9222 TARGET_ID --json
+  --include-json-body-shapes --format json
+rea analyze-web-bundle http://127.0.0.1:9222 TARGET_ID --format json
 ```
 
 必要时使用 `--allowed-origins` 收窄到目标站点及已观察到的相关 API/CDN origin，具体数组传参语法以 installed help 为准。不要为方便而打开所有来源。
@@ -94,8 +94,7 @@ rea analyze-web-bundle http://127.0.0.1:9222 TARGET_ID --json
 ```
 
 ```bash
-rea validate-browser-scenario ./analysis-scenario.json --json
-rea capture-browser-scenario ./analysis-scenario.json --json > analysis-capture.json
+rea capture-browser-scenario ./analysis-scenario.json --format json > analysis-capture.json
 ```
 
 连接已有会话时，将 `browser` 替换为 `{"mode":"connect","cdp_endpoint":"http://127.0.0.1:9222","target_id":"ACTUAL_TARGET_ID"}`。launch 使用自身临时配置；connect 会操作选定页面但只断开连接，不关闭用户浏览器。
@@ -130,8 +129,8 @@ rea capture-browser-scenario ./analysis-scenario.json --json > analysis-capture.
 被动捕获须选择 `include_script_sources`；scenario 须选择 `capture.network.response_body`。在任务临时工作区保存完整 Evidence 或标准化结果，再导出到该工作区内一个尚不存在的目录；以下绝对路径替换为实际临时路径：
 
 ```bash
-rea export-web-scripts /absolute/analysis-capture.json /absolute/exported-scripts --json
-rea analyze-javascript-application /absolute/exported-scripts/files --json
+rea export-web-scripts /absolute/analysis-capture.json /absolute/exported-scripts --format json
+rea analyze-javascript-application /absolute/exported-scripts/files --format json
 ```
 
 以导出结果实际返回的 `analysis_input` 为准。检查 manifest、源码 digest 与 unavailable 原因；导出不补抓缺失 URL，不执行 JS，不自动还原所有 source map。
@@ -140,13 +139,13 @@ rea analyze-javascript-application /absolute/exported-scripts/files --json
 
 需要缩小实际执行位置时，可用当前版本提供的 `observe-web-execution`；等 armed progress 后再触发动作。它是 V8 coverage，会影响 JIT/计数/时序，不捕获任意函数参数，也不等同于加密 hook。
 
-已有 HAR 可离线读取：`rea inspect-web-network-capture /absolute/session.har har --json`。该操作不会发送 HAR 中记录的请求；正文是否完整取决于原始 HAR。缺失、脱敏、截断内容均须如实标注。
+已有 HAR 可离线读取：`rea inspect-web-network-capture /absolute/session.har har --format json`。该操作不会发送 HAR 中记录的请求；正文是否完整取决于原始 HAR。缺失、脱敏、截断内容均须如实标注。
 
 ## 缺失能力与失败处理
 
-REA 不可用时继续已授权且能完成的网页结构检查、HTTP 探测、页面 JS 阅读与接口复现，并说明实际采用的路径。不要把缺少 REA/MCP/CDP 当作网站封禁，也不要声称使用了并不存在的工具。
+REA CLI 不可用时继续已授权且能完成的网页结构检查、HTTP 探测、页面 JS 阅读与接口复现，并说明实际采用的路径。
 
-需要补充网络正文、调试调用链或观察验证码时，使用当前环境真实允许的 Playwright 或 Chrome 插件；先读取对应工具/浏览器 skill，遵守它公开的能力边界。工具明确拒绝访问时，不更换通道规避拒绝。
+需要补充网络正文或调试信息时，使用当前环境已有且获授权的浏览器开发者工具。工具明确拒绝访问时，不更换通道规避拒绝。
 
 REA 没有内置通用 CAPTCHA/滑块破解器。图形识别、算法复现及服务端验证是另行实现的 Python 分支；只有验证接口接受并能继续返回目标数据才算通过。
 
