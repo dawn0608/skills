@@ -5,7 +5,6 @@ import argparse
 import json
 import os
 import sys
-import time
 import urllib.error
 import urllib.request
 from datetime import datetime
@@ -13,8 +12,6 @@ from pathlib import Path
 
 BASE = "https://dashscope.aliyuncs.com/api/v1"
 SYNC_URL = f"{BASE}/services/aigc/multimodal-generation/generation"
-ASYNC_SUBMIT_URL = f"{BASE}/services/aigc/text2image/image-synthesis"
-TASK_URL = f"{BASE}/tasks"
 DEFAULT_MODEL = "qwen-image-3.0-pro"
 DEFAULT_SIZE = "1024*1024"
 
@@ -55,8 +52,7 @@ def build_payload(args):
     if args.seed is not None:
         params["seed"] = args.seed
     params["watermark"] = args.watermark
-    if args.model.startswith("qwen-image"):
-        params["prompt_extend"] = not args.no_prompt_extend
+    params["prompt_extend"] = not args.no_prompt_extend
     return {
         "model": args.model,
         "input": {"messages": [{"role": "user", "content": [{"text": args.prompt}]}]},
@@ -72,24 +68,6 @@ def submit_sync(payload, key, timeout):
             if isinstance(item, dict) and item.get("image"):
                 urls.append(item["image"])
     return urls
-
-
-def submit_async(payload, key, timeout):
-    j = request_json(ASYNC_SUBMIT_URL, key, payload, headers={"X-DashScope-Async": "enable"}, timeout=timeout)
-    task_id = j.get("output", {}).get("task_id")
-    if not task_id:
-        die(f"未获得 task_id: {json.dumps(j, ensure_ascii=False)[:300]}")
-    deadline = time.time() + timeout
-    while time.time() < deadline:
-        time.sleep(3)
-        r = request_json(f"{TASK_URL}/{task_id}", key, timeout=60)
-        output = r.get("output", {})
-        status = output.get("task_status")
-        if status == "SUCCEEDED":
-            return [item["url"] for item in output.get("results", []) if item.get("url")]
-        if status in ("FAILED", "CANCELED"):
-            die(f"任务 {task_id} {status}: {json.dumps(r, ensure_ascii=False)[:400]}")
-    die(f"任务 {task_id} 超时（{timeout}s）")
 
 
 def unique_path(base):
@@ -131,11 +109,7 @@ def main():
     if not key:
         die("DASHSCOPE_API_KEY 未设置。按 ~/.agents/docs/models.md 中 providers.bailian.api_key_env 注入环境变量后重试。")
 
-    payload = build_payload(args)
-    if args.model.startswith("qwen-image"):
-        urls = submit_sync(payload, key, args.timeout)
-    else:
-        urls = submit_async(payload, key, args.timeout)
+    urls = submit_sync(build_payload(args), key, args.timeout)
     if not urls:
         die("接口未返回图片 URL")
 
