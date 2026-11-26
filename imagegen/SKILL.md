@@ -1,76 +1,50 @@
 ---
 name: imagegen
-description: 生成与编辑位图图像（照片、插画、海报、配图、贴图、商品图、UI 概念图等）。当用户要求画图、生成图片、配图、插图、海报、文生图，或说 generate image、make a picture、create an illustration 时使用；也用于编辑已有图片：去水印、提升清晰度、上色、换背景、风格迁移（edit image、remove watermark、upscale、colorize）。默认通过阿里云百炼 qwen-image-3.0-pro。不适用于：SVG 图标、流程图、图表、简单几何示意图——这些应直接用代码（SVG/HTML/CSS/Mermaid）绘制。
+description: 生成或编辑位图图像（照片、插画、海报、配图、贴图、商品图、UI 概念图等）。当用户要求画图、生成图片、配图、插图、海报、文生图、改图、修图、编辑图片，或说 generate image、edit image、make a picture、create an illustration 时使用。通过阿里云百炼 qwen-image-3.0-pro 执行。不适用于：SVG 图标、流程图、图表、简单几何示意图——这些应直接用代码（SVG/HTML/CSS/Mermaid）绘制。
 allowed-tools: Bash(python3:*)
 ---
 
 # imagegen
 
-通过阿里云百炼（DashScope）生成与编辑位图图像。
+通过阿里云百炼 qwen-image-3.0-pro 生成或编辑位图图像。
 
-## 模型
+## When to use
 
-统一使用 `qwen-image-3.0-pro`：文生图与指令编辑同一模型，擅长中文文字渲染，支持 1–3 张参考图，输出 512²–2048²。
+- 生成新图像：插画、照片、海报、配图、素材、概念图、UI 概念稿
+- 编辑已有图像：按指令修改现有图片（增删或替换元素、换背景、改风格、调整细节）
+- 使用 1–3 张参考图指导生成或融合
+
+## When not to use
+
+- SVG 图标、logo 等应与现有矢量资产匹配的图形
+- 流程图、图表、简单示意图——用代码（SVG/HTML/CSS/Mermaid）绘制更准确
 
 ## 用法
 
 ```bash
-# 基本用法：输出到当前目录（imagegen-<时间戳>.png）
-python3 scripts/gen_image.py "一只橘猫坐在窗台上晒太阳，水彩插画风格"
+# 生成
+python3 scripts/image_gen.py generate "一只橘猫坐在窗台上晒太阳，水彩插画风格"
 
-# 指定输出路径与尺寸
-python3 scripts/gen_image.py "春天的城市海报" -o ~/Desktop/poster.png --size 1536*1024
+# 编辑：指令描述改动，写明保持不变的部分
+python3 scripts/image_gen.py edit --image 原图.png --prompt "把背景换成海边日落，人物与姿势保持不变"
 
-# 一次生成多张（n=4），输出到目录
-python3 scripts/gen_image.py "科技感抽象背景" -o ./assets/bg/ --n 4
-
-# 排除元素与固定种子
-python3 scripts/gen_image.py "极简产品包装" --negative-prompt "文字, 水印" --seed 42
+# 多图参考
+python3 scripts/image_gen.py edit --image 人物.png --image 风格参考.png --prompt "把第一张图的人物画成第二张图的画风"
 ```
 
-参数：`--model`、`--size`（默认 `1024*1024`，总像素 512²–2048²）、`--n`（1–6）、`--negative-prompt`、`--seed`、`--no-prompt-extend`、`--watermark`、`-o`、`--timeout`。
-
-## 密钥
-
-仅从环境变量 `DASHSCOPE_API_KEY` 读取，缺失时脚本会报错并提示。按 `~/.agents/docs/models.md` 的 `providers.bailian.api_key_env` 注入测试进程：
-
-```bash
-DASHSCOPE_API_KEY="$KEY" python3 scripts/gen_image.py "..."
-```
-
-密钥不得进入脚本文件、命令回显、日志或回复。
-
-## 保存规则
-
-- 用户指定路径优先，否则输出到当前目录。
-- 项目使用的图片移入工作区，不留在临时目录。
-- 不覆盖已有文件：脚本遇到同名自动改用 `-v2`、`-v3`。
-- 接口返回的图片 URL 仅 24 小时有效，脚本内置立即下载，无需手动处理。
-
-## 图像编辑（qwen-image-3.0-pro）
-
-```bash
-# 去水印
-python3 scripts/edit_image.py --image 图.png --prompt "去掉右下角的 WATERMARK 文字水印，自然补全，其余完全保持不变"
-
-# 提升清晰度（生成式增强，可输出 2048）
-python3 scripts/edit_image.py --image 低清.png --prompt "保持构图与内容完全不变，提升清晰度、增强细节" --size "2048*2048"
-
-# 黑白/老照片上色
-python3 scripts/edit_image.py --image 老照片.jpg --prompt "为黑白照片自然上色，保持原貌"
-
-# 换背景、改元素、风格迁移
-python3 scripts/edit_image.py --image 原图.png --prompt "把背景换成海边日落，保持主体不变"
-
-# 多图参考（1–3 张，重复 --image）
-python3 scripts/edit_image.py --image 人物.png --image 风格参考.png --prompt "把第一张图的人物画成第二张图的画风"
-```
-
-- 默认模型 `qwen-image-3.0-pro`；输入 1–3 张、单张 ≤10MB、建议 384–3072px；输出尺寸用 `--size` 指定（512²–2048²，默认 1024×1024）
-- 指令中写明"保持原图构图与主体不变，仅修改 X"，效果更稳
-- 实测：去水印、清晰度增强均能完整保留原图结构，输出 2048px
-- 只对有处理权的图片做去水印
+参数：`--size`（512²–2048²，默认 `1024*1024`）、`--n`、`--seed`、`-o`、`--timeout`；生成另支持 `--negative-prompt`、`--no-prompt-extend`；编辑可重复 `--image` 传 1–3 张（单张 ≤10MB）。
 
 ## 提示词
 
-提示词结构、中文文字渲染技巧与参数速查见 [references/prompting.md](references/prompting.md)。
+- 生成：用陈述句按「主体 + 环境 + 风格 + 光线」描述，详见 [references/prompting.md](references/prompting.md)
+- 编辑：明确「保持原图 X 不变，仅修改 Y」，避免模型改动无关部分
+
+## 保存规则
+
+- 用户指定路径优先，否则输出到当前目录；项目用图移入工作区
+- 不覆盖已有文件（自动 `-v2`、`-v3`）
+- 图片 URL 仅 24 小时有效，脚本内置立即下载
+
+## 密钥
+
+仅从环境变量 `DASHSCOPE_API_KEY` 读取（按 `~/.agents/docs/models.md` 的 `providers.bailian.api_key_env` 注入），不进入文件、日志或回复。
