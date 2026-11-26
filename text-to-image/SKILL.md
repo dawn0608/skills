@@ -63,8 +63,8 @@ python3 scripts/edit_image.py --image 低清.png --function super_resolution --u
 # 黑白/老照片上色
 python3 scripts/edit_image.py --image 老照片.jpg --function colorization
 
-# 指令编辑（换背景等）
-python3 scripts/edit_image.py --image 原图.png --function description_edit --prompt "把背景换成海边日落"
+# 指令编辑（换背景、改元素、风格迁移）——推荐 qwen 模式
+python3 scripts/edit_image.py --image 原图.png --model qwen-image-3.0-pro --prompt "把背景换成海边日落，保持主体不变"
 
 # 扩图（四边各 1.0–2.0 倍）
 python3 scripts/edit_image.py --image 构图过紧.png --function expand --left-scale 1.5 --right-scale 1.5
@@ -75,6 +75,8 @@ function 取值：`remove_watermark`、`super_resolution`、`colorization`、`ex
 限制：输入图宽高 512–4096px、≤10MB；仅北京地域；异步任务约 5–15 秒，脚本已内置轮询与下载。只对有处理权的图片做去水印。
 
 注意：`super_resolution` 输出上限约 1024px（实测 512→1024 放大有效，1024 输入不再放大）；需要更大尺寸时改用 `wan2.7-image-pro` 或本地插值放大。
+
+实测对比（同图同指令）：`qwen-image-3.0-pro` 指令编辑能完整保留原图结构、输出 2048px；`wanx2.1-imageedit` 的 `description_edit` 易破坏画面结构（实测灯塔被改坏），**指令编辑一律用 qwen 模式**，wanx 仅用于其专用功能（去水印/超分/上色/扩图/线稿）。
 
 ## 提示词
 
