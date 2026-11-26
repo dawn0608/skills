@@ -8,5 +8,8 @@
   },
   "web-reverse/SKILL.md": {
     "origin": "self"
+  },
+  "text-to-image/SKILL.md": {
+    "origin": "self"
   }
 }

@@ -7,6 +7,7 @@
 | [agent-browser](agent-browser/SKILL.md) | 用浏览器执行网页交互、截图和测试，通过本机 `agent-browser` CLI 按需加载与版本匹配的指南。 |
 | [web-reverse](web-reverse/SKILL.md) | 复现网页数据请求，交付可独立运行的 Python HTTP 爬虫和原始响应样例。 |
 | [ui-taste](ui-taste/SKILL.md) | 使用 [Uizze 官方发布](https://uizze.sh/.well-known/skills/index.json)的设计指南，设计、打磨和评审 Web 或 iOS 界面。 |
+| [text-to-image](text-to-image/SKILL.md) | 通过阿里云百炼生成位图图像（插画、海报、配图），默认 `qwen-image-3.0-pro`。 |
 
 ## 使用示例
 
