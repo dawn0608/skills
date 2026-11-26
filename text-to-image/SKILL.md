@@ -51,6 +51,31 @@ DASHSCOPE_API_KEY="$KEY" python3 scripts/gen_image.py "..."
 - 不覆盖已有文件：脚本遇到同名自动改用 `-v2`、`-v3`。
 - 接口返回的图片 URL 仅 24 小时有效，脚本内置立即下载，无需手动处理。
 
+## 图像编辑（去水印 / 超分 / 上色 / 扩图）
+
+```bash
+# 去文字水印
+python3 scripts/edit_image.py --image 输入.png --function remove_watermark -o 输出.png
+
+# 超分辨率：--upscale 2 放大 2 倍；--upscale 1 只增强清晰度不放大
+python3 scripts/edit_image.py --image 低清.png --function super_resolution --upscale 2
+
+# 黑白/老照片上色
+python3 scripts/edit_image.py --image 老照片.jpg --function colorization
+
+# 指令编辑（换背景等）
+python3 scripts/edit_image.py --image 原图.png --function description_edit --prompt "把背景换成海边日落"
+
+# 扩图（四边各 1.0–2.0 倍）
+python3 scripts/edit_image.py --image 构图过紧.png --function expand --left-scale 1.5 --right-scale 1.5
+```
+
+function 取值：`remove_watermark`、`super_resolution`、`colorization`、`expand`、`description_edit`、`description_edit_with_mask`（需 `--mask`）、`stylization_all`、`stylization_local`、`doodle`、`control_cartoon_feature`。
+
+限制：输入图宽高 512–4096px、≤10MB；仅北京地域；异步任务约 5–15 秒，脚本已内置轮询与下载。只对有处理权的图片做去水印。
+
+注意：`super_resolution` 输出上限约 1024px（实测 512→1024 放大有效，1024 输入不再放大）；需要更大尺寸时改用 `wan2.7-image-pro` 或本地插值放大。
+
 ## 提示词
 
 提示词结构、中文文字渲染技巧与参数速查见 [references/prompting.md](references/prompting.md)。
