@@ -1,55 +1,141 @@
 ---
 name: find-skills
-description: Use when you need to discover which skills are installed on this machine or in the current project, or to search installed skills by keyword before starting a task. Triggers include "find skills", "list skills", "search skills", "which skills exist", "有没有相关技能", "查找技能", "列出技能".
+description: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
 ---
 
-# find-skills
+# Find Skills
 
-列出本机共享技能目录和当前项目中的技能，输出可直接交给 Read 工具的 `SKILL.md` 绝对路径。
+This skill helps you discover and install skills from the open agent skills ecosystem.
 
-## 何时使用
+## When to Use This Skill
 
-- 开始任务前，确认已有可用技能，避免重复实现
-- 只记得关键词（如 `pdf`、`browser`、`爬虫`），需要定位对应技能
-- 核对本机各编码 Agent 实际可见的技能清单
+Use this skill when the user:
 
-## 用法
+- Asks "how do I do X" where X might be a common task with an existing skill
+- Says "find a skill for X" or "is there a skill for X"
+- Asks "can you do X" where X is a specialized capability
+- Expresses interest in extending agent capabilities
+- Wants to search for tools, templates, or workflows
+- Mentions they wish they had help with a specific domain (design, testing, deployment, etc.)
 
-在技能目录内执行：
+## What is the Skills CLI?
+
+The Skills CLI (`npx skills`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.
+
+**Key commands:**
+
+- `npx skills find [query] [--owner <owner>]` - Search for skills interactively or by keyword, optionally scoped to a GitHub owner
+- `npx skills add <package>` - Install a skill from GitHub or other sources
+- `npx skills update` - Update all installed skills
+
+**Browse skills at:** https://skills.sh/
+
+## How to Help Users Find Skills
+
+### Step 1: Understand What They Need
+
+When a user asks for help with something, identify:
+
+1. The domain (e.g., React, testing, design, deployment)
+2. The specific task (e.g., writing tests, creating animations, reviewing PRs)
+3. Whether this is a common enough task that a skill likely exists
+
+### Step 2: Check the Leaderboard First
+
+Before running a CLI search, check the [skills.sh leaderboard](https://skills.sh/) to see if a well-known skill already exists for the domain. The leaderboard ranks skills by total installs, surfacing the most popular and battle-tested options.
+
+For example, top skills for web development include:
+- `vercel-labs/agent-skills` — React, Next.js, web design (100K+ installs each)
+- `anthropics/skills` — Frontend design, document processing (100K+ installs)
+
+### Step 3: Search for Skills
+
+If the leaderboard doesn't cover the user's need, run the find command:
 
 ```bash
-# 列出全部技能
-bash scripts/find-skills
-
-# 按关键词过滤（对技能内容和路径做不区分大小写的 ERE 匹配）
-bash scripts/find-skills pdf
-bash scripts/find-skills 'test|tdd'
+npx skills find [query] [--owner <owner>]
 ```
 
-输出格式：
+For example:
+
+- User asks "how do I make my React app faster?" → `npx skills find react performance`
+- User asks "can you help me with PR reviews?" → `npx skills find pr review`
+- User asks "I need to create a changelog" → `npx skills find changelog`
+
+### Step 4: Verify Quality Before Recommending
+
+**Do not recommend a skill based solely on search results.** Always verify:
+
+1. **Install count** — Prefer skills with 1K+ installs. Be cautious with anything under 100.
+2. **Source reputation** — Official sources (`vercel-labs`, `anthropics`, `microsoft`) are more trustworthy than unknown authors.
+3. **GitHub stars** — Check the source repository. A skill from a repo with <100 stars should be treated with skepticism.
+
+### Step 5: Present Options to the User
+
+When you find relevant skills, present them to the user with:
+
+1. The skill name and what it does
+2. The install count and source
+3. The install command they can run
+4. A link to learn more at skills.sh
+
+Example response:
 
 ```
-/absolute/path/SKILL.md - description
+I found a skill that might help! The "react-best-practices" skill provides
+React and Next.js performance optimization guidelines from Vercel Engineering.
+(185K installs)
+
+To install it:
+npx skills add vercel-labs/agent-skills@react-best-practices
+
+Learn more: https://skills.sh/vercel-labs/agent-skills/react-best-practices
 ```
 
-命中后必须用 Read 工具读取完整 `SKILL.md` 再使用；不要只读 frontmatter，也不要凭记忆套用旧版本。
+### Step 6: Offer to Install
 
-## 搜索范围
+If the user wants to proceed, you can install the skill for them:
 
-按顺序搜索以下目录，不存在的目录跳过，按真实路径去重：
+```bash
+npx skills add <owner/repo@skill> -g -y
+```
 
-1. `$FIND_SKILLS_DIRS`（可选，冒号分隔的额外目录）
-2. `~/.agents/skills`
-3. `~/.claude/skills`
-4. `~/.codex/skills`
-5. `~/.gemini/skills`
-6. `$PWD/.agents/skills`
-7. `$PWD/.claude/skills`
+The `-g` flag installs globally (user-level) and `-y` skips confirmation prompts.
 
-其中 `~/.agents/skills` 是共享技能仓库；Codex、Copilot CLI 和 Gemini CLI 也原生识别该目录。以 `.` 开头的目录（如 Codex 的 `.system`）和 `node_modules` 会被跳过。
+## Common Skill Categories
 
-## 约束
+When searching, consider these common categories:
 
-- 只读操作，不修改任何技能文件。
-- 兼容 macOS 自带的 bash 3.2。
-- `~/.claude/skills` 是指向 `~/.agents/skills` 的软链接时会自动去重。
+| Category        | Example Queries                          |
+| --------------- | ---------------------------------------- |
+| Web Development | react, nextjs, typescript, css, tailwind |
+| Testing         | testing, jest, playwright, e2e           |
+| DevOps          | deploy, docker, kubernetes, ci-cd        |
+| Documentation   | docs, readme, changelog, api-docs        |
+| Code Quality    | review, lint, refactor, best-practices   |
+| Design          | ui, ux, design-system, accessibility     |
+| Productivity    | workflow, automation, git                |
+
+## Tips for Effective Searches
+
+1. **Use specific keywords**: "react testing" is better than just "testing"
+2. **Try alternative terms**: If "deploy" doesn't work, try "deployment" or "ci-cd"
+3. **Check popular sources**: Many skills come from `vercel-labs/agent-skills` or `ComposioHQ/awesome-claude-skills`
+
+## When No Skills Are Found
+
+If no relevant skills exist:
+
+1. Acknowledge that no existing skill was found
+2. Offer to help with the task directly using your general capabilities
+3. Suggest the user could create their own skill with `npx skills init`
+
+Example:
+
+```
+I searched for skills related to "xyz" but didn't find any matches.
+I can still help you with this task directly! Would you like me to proceed?
+
+If this is something you do often, you could create your own skill:
+npx skills init my-xyz-skill
+```

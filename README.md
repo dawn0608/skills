@@ -8,8 +8,8 @@
 | [web-reverse](web-reverse/SKILL.md) | 复现网页数据请求，交付可独立运行的 Python HTTP 爬虫和原始响应样例。 |
 | [ui-taste](ui-taste/SKILL.md) | 使用 [Uizze 官方发布](https://uizze.sh/.well-known/skills/index.json)的设计指南，设计、打磨和评审 Web 或 iOS 界面。 |
 | [imagegen](imagegen/SKILL.md) | 通过阿里云百炼 `qwen-image-3.0-pro` 生成或编辑位图图像：文生图、按指令编辑、1–3 张参考图融合。 |
-| [find-skills](find-skills/SKILL.md) | 发现本机共享目录及当前项目中的技能，支持关键词过滤，输出可直接读取的 `SKILL.md` 路径。 |
-| [skill-creator](skill-creator/SKILL.md) | 创建、修改和评估技能；脚本依赖 PyYAML，评估与描述优化依赖 Claude Code CLI（`claude -p`）。 |
+| [find-skills](find-skills/SKILL.md) | 通过 `npx skills` 检索、安装和更新开放技能生态中的技能；浏览 [skills.sh](https://skills.sh/) 并按安装量与来源筛选。 |
+| [skill-creator](skill-creator/SKILL.md) | 来自 [anthropics/skills](https://github.com/anthropics/skills)，创建、修改和评估技能；脚本依赖 PyYAML，评估与描述优化依赖 Claude Code CLI（`claude -p`）。 |
 
 ## 使用示例
 

@@ -14,10 +14,10 @@
   },
   "find-skills/SKILL.md": {
     "origin": "third-party",
-    "repository": "https://github.com/obra/superpowers-skills"
+    "repository": "https://github.com/vercel-labs/skills"
   },
   "skill-creator/SKILL.md": {
     "origin": "third-party",
-    "repository": "https://github.com/anthropics/claude-plugins-official"
+    "repository": "https://github.com/anthropics/skills"
   }
 }
