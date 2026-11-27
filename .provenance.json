@@ -19,5 +19,13 @@
   "skill-creator/SKILL.md": {
     "origin": "third-party",
     "repository": "https://github.com/anthropics/skills"
+  },
+  "doc-coauthoring/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/anthropics/skills"
+  },
+  "mcp-builder/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/anthropics/skills"
   }
 }

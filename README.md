@@ -10,6 +10,8 @@
 | [imagegen](imagegen/SKILL.md) | 通过阿里云百炼 `qwen-image-3.0-pro` 生成或编辑位图图像：文生图、按指令编辑、1–3 张参考图融合。 |
 | [find-skills](find-skills/SKILL.md) | 通过 `npx skills` 检索、安装和更新开放技能生态中的技能；浏览 [skills.sh](https://skills.sh/) 并按安装量与来源筛选。 |
 | [skill-creator](skill-creator/SKILL.md) | 来自 [anthropics/skills](https://github.com/anthropics/skills)，创建、修改和评估技能；脚本依赖 PyYAML，评估与描述优化依赖 Claude Code CLI（`claude -p`）。 |
+| [doc-coauthoring](doc-coauthoring/SKILL.md) | 来自 [anthropics/skills](https://github.com/anthropics/skills)，引导文档协作流程：收集上下文、分节头脑风暴与起草、用子 Agent 做读者测试；适用于 PRD、RFC、决策文档、提案等。 |
+| [mcp-builder](mcp-builder/SKILL.md) | 来自 [anthropics/skills](https://github.com/anthropics/skills)，指导构建高质量 MCP 服务器（Python FastMCP / TypeScript SDK），含研究、实现、测试与评估流程；评估脚本依赖 `anthropic` 与 `mcp` Python 包。 |
 
 ## 使用示例
 
