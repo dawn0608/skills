@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+# find-skills - List installed agent skills with descriptions.
+# Adapted from obra/superpowers-skills (skills/using-skills/find-skills, MIT)
+# for the shared ~/.agents/skills layout.
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+find-skills - List installed agent skills with descriptions
+
+USAGE:
+  bash scripts/find-skills [PATTERN]
+  bash scripts/find-skills --help
+
+  PATTERN  Case-insensitive extended regex matched against skill content and paths.
+
+ENVIRONMENT:
+  FIND_SKILLS_DIRS  Extra colon-separated skill roots (searched first).
+
+SEARCH ROOTS (existing directories only, deduplicated by real path):
+  ~/.agents/skills
+  ~/.claude/skills
+  ~/.codex/skills
+  ~/.gemini/skills
+  $PWD/.agents/skills
+  $PWD/.claude/skills
+
+OUTPUT:
+  /absolute/path/to/SKILL.md - description
+  Read the full SKILL.md before using a skill.
+
+Directories starting with "." and node_modules are skipped.
+EOF
+}
+
+PATTERN=""
+case "${1:-}" in
+  -h|--help) usage; exit 0 ;;
+  "") ;;
+  *) PATTERN="$1" ;;
+esac
+if [ "$#" -gt 1 ]; then
+  echo "Too many arguments. Run with --help for usage." >&2
+  exit 2
+fi
+
+ROOTS=()
+seen_roots=$'\n'
+
+add_root() {
+  local dir="$1" real
+  [ -d "$dir" ] || return 0
+  real="$(cd "$dir" && pwd -P)" || return 0
+  [ -n "$real" ] || return 0
+  case "$seen_roots" in
+    *$'\n'"$real"$'\n'*) return 0 ;;
+  esac
+  seen_roots="${seen_roots}${real}"$'\n'
+  ROOTS+=("$real")
+}
+
+if [ -n "${FIND_SKILLS_DIRS:-}" ]; then
+  IFS=':' read -r -a extra_roots <<< "$FIND_SKILLS_DIRS" || true
+  for dir in "${extra_roots[@]}"; do
+    [ -n "$dir" ] && add_root "$dir"
+  done
+fi
+
+add_root "$HOME/.agents/skills"
+add_root "$HOME/.claude/skills"
+add_root "$HOME/.codex/skills"
+add_root "$HOME/.gemini/skills"
+add_root "$PWD/.agents/skills"
+add_root "$PWD/.claude/skills"
+
+meta_value() {
+  local file="$1" key="$2"
+  awk -v key="$key" '
+    BEGIN { in_fm = 0; block_mode = 0; printed = 0; block = "" }
+    NR == 1 && $0 == "---" { in_fm = 1; next }
+    !in_fm { exit }
+    $0 == "---" {
+      if (block_mode && !printed) print block
+      printed = 1
+      exit
+    }
+    block_mode {
+      line = $0
+      if (line ~ /^[^[:space:]]/) {
+        if (!printed) print block
+        printed = 1
+        exit
+      }
+      sub(/^[[:space:]]+/, "", line)
+      if (line == "") next
+      block = block (block == "" ? "" : " ") line
+      next
+    }
+    !printed && index($0, key ":") == 1 {
+      value = substr($0, length(key) + 2)
+      sub(/^[[:space:]]+/, "", value)
+      sub(/[[:space:]]+$/, "", value)
+      if (value ~ /^[|>][-+]?$/) {
+        block_mode = 1
+        next
+      }
+      if (value ~ /^".*"$/) value = substr(value, 2, length(value) - 2)
+      print value
+      printed = 1
+      exit
+    }
+    END { if (block_mode && !printed) print block }
+  ' "$file"
+}
+
+list_skill_files() {
+  find "$1" -mindepth 1 \( -name '.*' -o -name node_modules \) -prune -o -type f -name SKILL.md -print 2>/dev/null
+}
+
+all_files="$(
+  for root in "${ROOTS[@]}"; do
+    list_skill_files "$root"
+  done
+)"
+
+if [ -n "$PATTERN" ]; then
+  matching_files="$(
+    printf '%s\n' "$all_files" | while IFS= read -r file; do
+      [ -n "$file" ] || continue
+      if printf '%s' "$file" | grep -E -i -q -- "$PATTERN" 2>/dev/null || grep -E -i -q -- "$PATTERN" "$file" 2>/dev/null; then
+        printf '%s\n' "$file"
+      fi
+    done
+  )"
+else
+  matching_files="$all_files"
+fi
+
+results=()
+seen_skills=$'\n'
+
+while IFS= read -r skill_md; do
+  [ -n "$skill_md" ] || continue
+  skill_dir="$(dirname "$skill_md")"
+  skill_real="$(cd "$skill_dir" && pwd -P)" || continue
+  file_real="$skill_real/SKILL.md"
+  case "$seen_skills" in
+    *$'\n'"$file_real"$'\n'*) continue ;;
+  esac
+  seen_skills="${seen_skills}${file_real}"$'\n'
+
+  description="$(meta_value "$file_real" "description")"
+  results+=("$file_real|$description")
+done <<< "$matching_files"
+
+if [ "${#results[@]}" -eq 0 ]; then
+  if [ -n "$PATTERN" ]; then
+    echo "No skills found matching: $PATTERN"
+  else
+    echo "No skills found"
+  fi
+  exit 0
+fi
+
+printf '%s\n' "${results[@]}" | sort | while IFS='|' read -r path description; do
+  if [ -n "$description" ]; then
+    printf '%s - %s\n' "$path" "$description"
+  else
+    printf '%s\n' "$path"
+  fi
+done

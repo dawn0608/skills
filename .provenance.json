@@ -11,5 +11,13 @@
   },
   "imagegen/SKILL.md": {
     "origin": "self"
+  },
+  "find-skills/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/obra/superpowers-skills"
+  },
+  "skill-creator/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/anthropics/claude-plugins-official"
   }
 }
