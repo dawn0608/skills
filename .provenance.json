@@ -3,6 +3,10 @@
     "origin": "third-party",
     "repository": "https://github.com/vercel-labs/agent-browser"
   },
+  "opencli-browser/SKILL.md": {
+    "origin": "third-party",
+    "repository": "https://github.com/jackwener/opencli"
+  },
   "ui-taste/SKILL.md": {
     "origin": "third-party"
   },
